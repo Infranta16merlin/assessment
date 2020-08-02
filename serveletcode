@@ -1,0 +1,80 @@
+package transaction;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
+
+/**
+ * Servlet implementation class servelettrans
+ */
+@WebServlet("/servelettrans")
+public class servelettrans extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public servelettrans() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		PrintWriter out=response.getWriter();
+		String name=request.getParameter("name");
+		String accnum=request.getParameter("accnum");
+		out.print("<h1>Lastest Transactions details</h1>");
+		out.print("<table border='3'>"
+				+ "<tr><th>Debited Amount</th>"
+				+ "<th>Date of withhdrawl</th>"
+				+ "<th>TransactionId details</th>");
+		try {
+			java.sql.Connection con=DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/database_name?user=root","root","Merlin1607!");
+			java.sql.Statement stmt=con.createStatement();
+			ResultSet rs=stmt.executeQuery("select * from transaction");
+			while(rs.next())
+			{
+				System.out.print("<tr<td>");
+				System.out.println(rs.getInt("debited amount"));
+				System.out.print("</td>");
+				System.out.print("<td>");
+				System.out.println(rs.getInt("date of withdrawl"));
+				System.out.print("</td>");
+				System.out.print("<td>");
+				System.out.println(rs.getInt("transactionid  details"));
+				System.out.print("</td>");
+				System.out.print("</tr>");
+			}
+	}
+catch(Exception p) {
+		System.out.println(p);
+	}
+		
+
+	System.out.print("</table>");
+
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+		request.getRequestDispatcher("trans.jsp").forward(request, response);
+	}
+
+}
